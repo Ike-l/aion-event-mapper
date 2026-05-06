@@ -7,7 +7,6 @@ use aion_state::prelude::{RegistrySaferReplacementResult};
 
 pub type OrRegistry = HashMap<Event, Event>;
 
-
 pub const OR_REGISTRY_RESOURCE_ID: ResourceId = ResourceId::StaticLabel("EventMapper OrRegistry");
 
 pub const OR_REGISTRY_ACCESS_BUILDER: AccessBuilder<'static> = AccessBuilder {
@@ -18,6 +17,7 @@ pub const OR_REGISTRY_ACCESS_BUILDER: AccessBuilder<'static> = AccessBuilder {
     resource_id: Some(OR_REGISTRY_RESOURCE_ID),
     resource_password: None
 };
+
 pub fn get_or_registry<'a>(
     program_registry: &'a Arc<ProgramRegistry>
 ) -> Shared<'a, OrRegistry> {
