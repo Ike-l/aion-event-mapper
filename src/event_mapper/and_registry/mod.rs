@@ -21,8 +21,6 @@ pub const AND_REGISTRY_ACCESS_BUILDER: AccessBuilder<'static> = AccessBuilder {
 pub fn get_and_registry<'a>(
     program_registry: &'a Arc<ProgramRegistry>
 ) -> Shared<'a, AndRegistry> {
-    let and_registry_resource_id = ResourceId::Label("EventMapper AndRegistry".to_owned());
-
     match program_registry
         .resolve::<Shared<AndRegistry>>(
             vec![AND_REGISTRY_ACCESS_BUILDER]
@@ -39,7 +37,7 @@ pub fn get_and_registry<'a>(
                                     program_password: None, 
                                     resource: Some(Resource::new::<AndRegistry>(HashMap::new())), 
                                     access: &ResourceAccess::Replace, 
-                                    resource_id: and_registry_resource_id.clone(), 
+                                    resource_id: AND_REGISTRY_RESOURCE_ID, 
                                     resource_password: None 
                                 });
 

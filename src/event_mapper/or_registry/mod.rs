@@ -21,8 +21,6 @@ pub const OR_REGISTRY_ACCESS_BUILDER: AccessBuilder<'static> = AccessBuilder {
 pub fn get_or_registry<'a>(
     program_registry: &'a Arc<ProgramRegistry>
 ) -> Shared<'a, OrRegistry> {
-    let or_registry_resource_id = ResourceId::Label("EventMapper OrRegistry".to_owned());
-
     match program_registry
         .resolve::<Shared<OrRegistry>>(
             vec![OR_REGISTRY_ACCESS_BUILDER]
@@ -39,7 +37,7 @@ pub fn get_or_registry<'a>(
                                     program_password: None, 
                                     resource: Some(Resource::new::<OrRegistry>(HashMap::new())), 
                                     access: &ResourceAccess::Replace, 
-                                    resource_id: or_registry_resource_id.clone(), 
+                                    resource_id: OR_REGISTRY_RESOURCE_ID, 
                                     resource_password: None 
                                 });
 
