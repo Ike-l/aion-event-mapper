@@ -32,22 +32,30 @@ impl EventSystem for EventMapper {
     fn execute(program_registry: &Arc<ProgramRegistry>, current_events: &EventBuffer) -> EventBuffer {
         let mut event_buffer = EventBuffer::default();
 
-        let and_registry = get_and_registry(program_registry);
-        event_buffer.extend(current_events.read().filter_map(|current_event| {
-            and_registry.as_ref().get(current_event).cloned()
-        }));
+        match get_and_registry(program_registry) {
+            Ok(Ok(Ok(and_registry))) => {
+                event_buffer.extend(current_events.read().filter_map(|current_event| {
+                    and_registry.as_ref().get(current_event).cloned()
+                }));
+            },
+            _ => (),
+        }
 
-        let or_registry = get_or_registry(program_registry);
-        event_buffer.extend(
-            or_registry
-                .as_ref()
-                .iter()
-                .filter(|(target_event, _)| {
-                    !current_events.contains(target_event)
-                })
-                .map(|(_, new_event)| new_event.clone())
-        );
 
+        match get_or_registry(program_registry) {
+            Ok(Ok(Ok(or_registry))) => {
+                event_buffer.extend(
+                    or_registry
+                        .as_ref()
+                        .iter()
+                        .filter(|(target_event, _)| {
+                            !current_events.contains(target_event)
+                        })
+                        .map(|(_, new_event)| new_event.clone())
+                );
+            },
+            _ => ()
+        }
 
         event_buffer
     }

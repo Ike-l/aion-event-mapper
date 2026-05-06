@@ -1,9 +1,8 @@
 use std::{collections::HashMap, sync::Arc};
 
 use aion_event::prelude::{Event};
-use aion_program::prelude::{ResourceId, ResourceAccess, Resource, ProgramReplaceResource, ProgramRegistry, AccessBuilder, ResolveResourceError};
+use aion_program::prelude::{ResourceId, ProgramRegistryResolveWithInsert, ProgramRegistryReplaceResourceError, AccessSubmissionError, Resource, ProgramRegistry, AccessBuilder, ResolveResourceError};
 use aion_processor::prelude::{Shared};
-use aion_state::prelude::{RegistrySaferReplacementResult};
 
 /// # AND Registry
 /// Each entry is composed of 2 `Event`s:
@@ -26,40 +25,14 @@ pub const AND_REGISTRY_ACCESS_BUILDER: AccessBuilder<'static> = AccessBuilder {
 
 pub fn get_and_registry<'a>(
     program_registry: &'a Arc<ProgramRegistry>
-) -> Shared<'a, AndRegistry> {
-    match program_registry
-        .resolve::<Shared<AndRegistry>>(
-            vec![AND_REGISTRY_ACCESS_BUILDER]
-        ) {
-            Ok(result) => {
-                match result {
-                    Ok(and_registry) => and_registry,
-                    Err(resolve_error) => {
-                        match resolve_error {
-                            ResolveResourceError::Resolving => {
-                                let replace_result = program_registry.replace_resource(ProgramReplaceResource { 
-                                    user_details: None,
-                                    program_id: None,
-                                    program_password: None, 
-                                    resource: Some(Resource::new::<AndRegistry>(HashMap::new())), 
-                                    access: &ResourceAccess::Replace, 
-                                    resource_id: AND_REGISTRY_RESOURCE_ID, 
-                                    resource_password: None 
-                                });
-
-                                assert!(matches!(replace_result, Ok(RegistrySaferReplacementResult::Found(_))));
-
-                                let Ok(Ok(and_registry)) = program_registry.resolve::<Shared<AndRegistry>>(vec![AND_REGISTRY_ACCESS_BUILDER]) else { unreachable!() };
-
-                                and_registry
-                            },
-                            ResolveResourceError::Casting |
-                            ResolveResourceError::NotEnoughResults |
-                            ResolveResourceError::TooManyResults => unreachable!(),
-                        }
-                    }
-                }
-            },
-            Err(_) => unreachable!(),
+) -> Result<Result<Result<Shared<'a, AndRegistry>, ProgramRegistryReplaceResourceError>, ResolveResourceError>, AccessSubmissionError> {
+    program_registry.resolve_with_insert::<Shared<AndRegistry>>(
+        vec![AND_REGISTRY_ACCESS_BUILDER], 
+        ProgramRegistryResolveWithInsert { 
+            resource: Some(Resource::new(AndRegistry::default())), 
+            resource_id: Some(AND_REGISTRY_RESOURCE_ID), 
+            ..Default::default()
         }
+    // is only ever None if resource_id is None
+    ).unwrap()
 }
