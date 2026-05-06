@@ -29,7 +29,7 @@ pub fn get_and_registry<'a>(
     program_registry.resolve_with_insert::<Shared<AndRegistry>>(
         vec![AND_REGISTRY_ACCESS_BUILDER], 
         ProgramRegistryResolveWithInsert { 
-            resource: Some(Resource::new(AndRegistry::default())), 
+            resource: Some(Box::new(|| Resource::new(AndRegistry::default()))), 
             resource_id: Some(AND_REGISTRY_RESOURCE_ID), 
             ..Default::default()
         }

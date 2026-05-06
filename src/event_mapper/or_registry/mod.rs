@@ -29,7 +29,7 @@ pub fn get_or_registry<'a>(
     program_registry.resolve_with_insert::<Shared<OrRegistry>>(
         vec![OR_REGISTRY_ACCESS_BUILDER], 
         ProgramRegistryResolveWithInsert { 
-            resource: Some(Resource::new(OrRegistry::default())), 
+            resource: Some(Box::new(|| Resource::new(OrRegistry::default()))), 
             resource_id: Some(OR_REGISTRY_RESOURCE_ID), 
             ..Default::default()
         }
