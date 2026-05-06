@@ -16,7 +16,6 @@ dependencies = [
  "aion-event",
  "aion-processor",
  "aion-program",
- "aion-state",
 ]
 
 [[package]]

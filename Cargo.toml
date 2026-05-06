@@ -7,4 +7,3 @@ edition = "2024"
 aion-event = { path = "../../aion-event" }
 aion-program = { path = "../../aion-program" }
 aion-processor = { path = "../../aion-processor" }
-aion-state = { path = "../../aion-state" }
