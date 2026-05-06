@@ -29,7 +29,11 @@ pub mod or_registry;
 pub struct EventMapper;
 
 impl EventSystem for EventMapper {
-    fn execute(program_registry: &Arc<ProgramRegistry>, current_events: &EventBuffer) -> EventBuffer {
+    fn execute(
+        program_registry: &Arc<ProgramRegistry>, 
+        current_events: &EventBuffer,
+        _event_history: &EventBuffer,
+    ) -> EventBuffer {
         let mut event_buffer = EventBuffer::default();
 
         match get_and_registry(program_registry) {
