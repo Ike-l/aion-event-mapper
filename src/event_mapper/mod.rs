@@ -26,7 +26,7 @@ pub mod or_registry;
 /// * R: New Event
 /// 
 /// If `Checking Event` is in `current_events` then it will spawn `New Event`
-pub struct EventMapper {}
+pub struct EventMapper;
 
 impl EventSystem for EventMapper {
     fn execute(program_registry: &Arc<ProgramRegistry>, current_events: &EventBuffer) -> EventBuffer {
