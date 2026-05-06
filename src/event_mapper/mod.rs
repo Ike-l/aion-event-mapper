@@ -1,6 +1,6 @@
 use std::{sync::Arc};
 
-use aion_event::prelude::{EventSystem, EventBuffer};
+use aion_event::prelude::{EventSystem, EventBuffer, EventHistory};
 use aion_program::prelude::{ProgramRegistry};
 use crate::{event_mapper::or_registry::get_or_registry, prelude::get_and_registry};
 
@@ -32,7 +32,7 @@ impl EventSystem for EventMapper {
     fn execute(
         program_registry: &Arc<ProgramRegistry>, 
         current_events: &EventBuffer,
-        _event_history: &EventBuffer,
+        _event_history: &EventHistory,
     ) -> EventBuffer {
         let mut event_buffer = EventBuffer::default();
 
