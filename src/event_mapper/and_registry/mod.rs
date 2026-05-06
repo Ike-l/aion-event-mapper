@@ -5,6 +5,12 @@ use aion_program::prelude::{ResourceId, ResourceAccess, Resource, ProgramReplace
 use aion_processor::prelude::{Shared};
 use aion_state::prelude::{RegistrySaferReplacementResult};
 
+/// # AND Registry
+/// Each entry is composed of 2 `Event`s:
+/// * L: Checking Event
+/// * R: New Event
+/// 
+/// If `Checking Event` is in `current_events` then it will spawn `New Event`
 pub type AndRegistry = HashMap<Event, Event>;
 
 pub const AND_REGISTRY_RESOURCE_ID: ResourceId = ResourceId::StaticLabel("EventMapper AndRegistry");

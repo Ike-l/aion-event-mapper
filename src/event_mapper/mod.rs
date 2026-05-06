@@ -7,6 +7,25 @@ use crate::{event_mapper::or_registry::get_or_registry, prelude::get_and_registr
 pub mod and_registry;
 pub mod or_registry;
 
+/// # Event Mapper
+/// Execute fetches the two registries from the `program_registry`
+/// 
+/// It then applies each respective semantics and returns the new events
+/// 
+/// The `OR Registry` and `AND Registry` are semantically opposite 
+/// 
+/// ## OR Registry
+/// Each entry is composed of 2 `Event`s:
+/// * L: Checking Event
+/// * R: New Event
+/// 
+/// If `Checking Event` is not in `current_events` then it will spawn `New Event`
+/// ## AND Registry
+/// Each entry is composed of 2 `Event`s:
+/// * L: Checking Event
+/// * R: New Event
+/// 
+/// If `Checking Event` is in `current_events` then it will spawn `New Event`
 pub struct EventMapper {}
 
 impl EventSystem for EventMapper {
