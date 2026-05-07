@@ -33,6 +33,6 @@ pub fn get_or_registry<'a>(
             resource_id: Some(OR_REGISTRY_RESOURCE_ID), 
             ..Default::default()
         }
-    // is only ever None if resource_id is None
+    // is only ever None if resource_id or resource is None
     ).unwrap()
 }
