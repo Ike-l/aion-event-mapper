@@ -14,7 +14,7 @@ pub type AndRegistry = HashMap<Event, Event>;
 
 pub const AND_REGISTRY_RESOURCE_ID: ResourceId = ResourceId::StaticLabel("EventMapper AndRegistry");
 
-pub const AND_REGISTRY_ACCESS_BUILDER: AccessBuilder<'static> = AccessBuilder {
+pub const AND_REGISTRY_ACCESS_BUILDER: AccessBuilder = AccessBuilder {
     user_details: None,
     program_id: None,
     program_password: None,
