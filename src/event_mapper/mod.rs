@@ -30,6 +30,7 @@ pub struct EventMapper;
 
 impl EventSystem for EventMapper {
     fn execute(
+        &self,
         program_registry: &Arc<ProgramRegistry>, 
         current_events: &EventBuffer,
         _event_history: &EventHistory,
