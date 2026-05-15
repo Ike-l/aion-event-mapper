@@ -22,6 +22,7 @@ dependencies = [
 name = "aion-event-mapper"
 version = "0.1.0"
 dependencies = [
+ "aion-ecs",
  "aion-event",
  "aion-processor",
  "aion-program",
