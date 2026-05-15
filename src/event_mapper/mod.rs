@@ -1,12 +1,13 @@
 use std::{sync::Arc};
 
-use aion_event::prelude::{EventSystem, EventBuffer, EventHistory};
+use aion_ecs::prelude::Query;
+use aion_event::prelude::{EventBuffer, EventHistory, EventSystem};
 use aion_program::prelude::{ProgramRegistry};
-use crate::{event_mapper::or_registry::get_or_registry, prelude::get_and_registry};
 
-pub mod and_registry;
-pub mod or_registry;
+use crate::prelude::{AndMapping, OrMapping};
 
+pub mod and_mapping;
+pub mod or_mapping;
 /// # Event Mapper
 /// Execute fetches the two registries from the `program_registry`
 /// 
@@ -37,29 +38,26 @@ impl EventSystem for EventMapper {
     ) -> EventBuffer {
         let mut event_buffer = EventBuffer::default();
 
-        match get_and_registry(program_registry) {
-            Ok(Ok(Ok(and_registry))) => {
-                event_buffer.extend(current_events.read().filter_map(|current_event| {
-                    and_registry.as_ref().get(current_event).cloned()
-                }));
-            },
-            _ => (),
+        {
+            let and_mappings = program_registry.resolve::<Query<&AndMapping>>(vec![]);
+            if let Ok(Ok(mut and_mappings)) = and_mappings {
+                for and_mapping in and_mappings.borrow().iter() {
+                    if and_mapping.is_satisfied(current_events) {
+                        event_buffer.insert(and_mapping.spawns().clone())
+                    }
+                }
+            }
         }
 
-
-        match get_or_registry(program_registry) {
-            Ok(Ok(Ok(or_registry))) => {
-                event_buffer.extend(
-                    or_registry
-                        .as_ref()
-                        .iter()
-                        .filter(|(target_event, _)| {
-                            !current_events.contains(target_event)
-                        })
-                        .map(|(_, new_event)| new_event.clone())
-                );
-            },
-            _ => ()
+        {
+            let or_mappings = program_registry.resolve::<Query<&OrMapping>>(vec![]);
+            if let Ok(Ok(mut or_mappings)) = or_mappings {
+                for or_mapping in or_mappings.borrow().iter() {
+                    if or_mapping.is_satisfied(current_events) {
+                        event_buffer.insert(or_mapping.spawns().clone())
+                    }
+                }
+            }
         }
 
         event_buffer
