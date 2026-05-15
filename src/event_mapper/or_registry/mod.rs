@@ -1,8 +1,7 @@
 use std::{collections::HashMap, sync::Arc};
 
 use aion_event::prelude::{Event};
-use aion_program::prelude::{ProgramRegistryReplaceResourceError, AccessSubmissionError, ProgramRegistryResolveWithInsert, ResourceId, Resource, ProgramRegistry, AccessBuilder, ResolveResourceError};
-use aion_processor::prelude::{Shared};
+use aion_program::prelude::{Shared, ProgramRegistryReplaceResourceError, AccessSubmissionError, ProgramRegistryResolveWithInsert, ResourceId, Resource, ProgramRegistry, AccessBuilder, ResolveResourceError};
 
 /// # OR Registry
 /// Each entry is composed of 2 `Event`s:
