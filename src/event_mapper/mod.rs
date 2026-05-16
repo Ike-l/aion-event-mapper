@@ -39,9 +39,9 @@ impl EventSystem for EventMapper {
         let mut event_buffer = EventBuffer::default();
 
         {
-            let and_mappings = program_registry.resolve::<Query<&AndMapping>>(vec![]);
-            if let Ok(Ok(mut and_mappings)) = and_mappings {
-                for and_mapping in and_mappings.borrow().iter() {
+            let and_mappings = program_registry.resolve::<Query<&AndMapping>>(None, vec![]);
+            if let Ok(Ok(and_mappings)) = and_mappings {
+                for and_mapping in and_mappings.query().iter() {
                     if and_mapping.is_satisfied(current_events) {
                         event_buffer.insert(and_mapping.spawns().clone())
                     }
@@ -50,9 +50,9 @@ impl EventSystem for EventMapper {
         }
 
         {
-            let or_mappings = program_registry.resolve::<Query<&OrMapping>>(vec![]);
-            if let Ok(Ok(mut or_mappings)) = or_mappings {
-                for or_mapping in or_mappings.borrow().iter() {
+            let or_mappings = program_registry.resolve::<Query<&OrMapping>>(None, vec![]);
+            if let Ok(Ok(or_mappings)) = or_mappings {
+                for or_mapping in or_mappings.query().iter() {
                     if or_mapping.is_satisfied(current_events) {
                         event_buffer.insert(or_mapping.spawns().clone())
                     }
