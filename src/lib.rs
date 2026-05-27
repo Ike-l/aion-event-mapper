@@ -9,6 +9,9 @@ pub mod prelude {
             },
             or_mapping::{
                 OrMapping
+            },
+            get_and_mappings::{
+                GetAndMappings
             }
         }
     };

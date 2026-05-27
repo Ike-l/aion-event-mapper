@@ -8,3 +8,5 @@ aion-event = { path = "../../aion-event" }
 aion-program = { path = "../../aion-program" }
 aion-processor = { path = "../../aion-processor" }
 aion-ecs = { path = "../../aion-ecs" }
+
+tokio = "1.52.3"
