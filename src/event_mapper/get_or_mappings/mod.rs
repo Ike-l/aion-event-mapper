@@ -6,7 +6,6 @@ use tokio::runtime::Runtime;
 
 use crate::prelude::OrMapping;
 
-
 pub trait GetOrMappings {
     fn get_or_mappings(
         &self,
