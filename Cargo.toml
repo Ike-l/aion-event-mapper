@@ -9,4 +9,9 @@ aion-program = { path = "../../aion-program" }
 aion-processor = { path = "../../aion-processor" }
 aion-ecs = { path = "../../aion-ecs" }
 
-tokio = "1.52.3"
+tokio = { version = "1.52.3", optional = true }
+
+[features]
+default = ["and-mapping", "or-mapping"]
+or-mapping = ["tokio"]
+and-mapping =["tokio"]
